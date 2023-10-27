@@ -24,11 +24,11 @@ if __name__ == "__main__":
     r = sendRequest()
     print(r.status_code)
 
-    with open(zipname, 'wb') as file:
+    with open("saczip/" + zipname, 'wb') as file:
         file.write(r.content)
 
-    with zf.ZipFile(zipname, 'r') as zip_ref:
-        zip_ref.extractall('test')
+    with zf.ZipFile("saczip/" + zipname, 'r') as zip_ref:
+        zip_ref.extractall('sac')
 
-    st = obspy.read("test\\"+ listdir("test")[0])
+    st = obspy.read("sac/"+ listdir("sac")[0])
     st.plot()
