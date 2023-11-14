@@ -46,6 +46,28 @@ def parseGeoCsvString(string: str):
 		res.append(lines[i].split('|'))
 	return res[4:-1]
 
+def selectEventMenuCLI(lastEvents: [any], dontPrintLabels: [str] = ['Author', 'Catalog', 'Contributor', 'ContributorId']):
+	dontPrintIndex = []
+	# Unwanted columns
+	for i in range(0, len(lastEvents[0])):
+		if(lastEvents[0][i] in dontPrintLabels):
+			dontPrintIndex.append(i)
+
+	if(len(lastEvents) > 0):
+		charsMax = [0]*len(lastEvents[0])
+
+	# Maximum characters/column for tabulation
+	for i in range(0, len(lastEvents)):
+		for j in range(0, len(lastEvents[i])):
+			charsMax[j] = max(charsMax[j], len(lastEvents[i][j]))
+
+	# Print
+	for i in range(0, len(lastEvents)):
+		for j in range(0, len(lastEvents[i])):
+			if(not j in dontPrintIndex):
+				print(lastEvents[i][j], end=("\t"*((charsMax[j]-len(lastEvents[i][j]))//4+1)))
+		print('')
+
 def main():
 	print("STARTING...")
 	filebasename = "IU.ANMO.00.BHZ.M.2010.058.063000"
@@ -53,17 +75,20 @@ def main():
 	zipname = filebasename + ".sac.zip"
 	wavfilename = filebasename + ".wav"
 
-	print("GETTING LAST EVENTS")
-	r = requestLastEvents(5)
-	if(r.status_code != 200):
-		print("ERROR, REQUEST FAIL... STATUS :", r.status_code)
-		exit
-	print(parseGeoCsvString(r.content.decode("utf-8")))
+	howManyEvents = 5
 
-	print("SENDING REQUEST")
+	print("GETTING LAST EVENTS")
+	r = requestLastEvents(howManyEvents)
+	if(r.status_code != 200):
+		print("ERROR, LAST EVENTS REQUEST FAILED... STATUS :", r.status_code)
+		exit
+	lastEvents = parseGeoCsvString(r.content.decode("utf-8"))
+	selectEventMenuCLI(lastEvents)
+
+	print("GETTING SAC FILE")
 	r = requestSac()
 	if(r.status_code != 200):
-		print("ERROR, REQUEST FAIL... STATUS :", r.status_code)
+		print("ERROR, SAC FILE REQUEST FAIL... STATUS :", r.status_code)
 		exit
 
 	print("SAVING ZIP FILE")
@@ -85,4 +110,5 @@ def main():
 if __name__ == "__main__":
 	r = requestLastEvents(5)
 	print(r.status_code)
-	print(parseGeoCsvString(r.content.decode("utf-8")))
+	lastEvents = parseGeoCsvString(r.content.decode("utf-8"))
+	selectEventMenuCLI(lastEvents)
