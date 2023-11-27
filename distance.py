@@ -27,22 +27,20 @@ def distance(lon1,lat1,lon2,lat2):
     
     return distance
 
-dist = distance(lon1, lat1, lon2, lat2)/1000
-print(f'la distance entre le foyer et la station la plus proche est {dist} ')
+if (__name__  == '__main__'):
 
-# pour le temps mis par l'onde pour aller du foyer à la station
+    dist = distance(lon1, lat1, lon2, lat2)/1000
+    print(f'la distance entre le foyer et la station la plus proche est {dist} ')
 
-V1 = 6   # avec V1 en Km/s qui correspondent aux ondes P
-V2 = 3.5   # avec V2 en Km/s qui correspondent aux ondes S
+    # pour le temps mis par l'onde pour aller du foyer à la station
 
-# tp = temps d'arrivée des ondes P et ts = temps d'arrivée des ondes S
+    V1 = 6   # avec V1 en Km/s qui correspondent aux ondes P
+    V2 = 3.5   # avec V2 en Km/s qui correspondent aux ondes S
 
-tp = (dist / V1)/60
-ts = (dist / V2)/60
+    # tp = temps d'arrivée des ondes P et ts = temps d'arrivée des ondes S
 
+    tp = (dist / V1)/60
+    ts = (dist / V2)/60
 
-print(f'le temps de parcours des ondes p est {tp} en min')
-print(f'le temps de parcours des ondes s est {ts} en min')
-
-
-
+    print(f'le temps de parcours des ondes p est {tp} en min')
+    print(f'le temps de parcours des ondes s est {ts} en min')

@@ -5,7 +5,6 @@ from tabulate import tabulate
 import os
 
 from sacToWav import sacToWav
-from distance import distance
 from sage_requests import *
 from convertions import geoCSVToDictArray
 
@@ -66,7 +65,7 @@ def main():
 	printDict(stations)
 
 	print("GETTING SAC FILES")
-	rs = requestMultipleSacs(stations, eventTime)
+	rs = requestMultipleSacs(stations, lastEvents[eventSelected])
 	resultArray = []
 
 	for fileToDelete in os.listdir('sac'):
@@ -99,6 +98,8 @@ def main():
 			if (generateWav):
 				print("GENERATING WAV FILE")
 				sacToWav(resultArray[-1], 'wav/'+ wavfilename(filebasename))
+
+			# print(resultArray[-1][0].stats.sampling_rate)
 
 if __name__ == "__main__":
 	main()
