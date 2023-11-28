@@ -24,7 +24,7 @@ def requestNearestStations(lat, lon, eventTime):
 	params = {
 		"lat":str(lat),
 		"lon":str(lon),
-		"maxradius":20,
+		"maxradius":0.1,
 		"startbefore":str((eventTime - relativedelta(minute=5)).date()),
 		"endafter":str((eventTime + relativedelta(minute=5)).date()),
 		"format":"geocsv"
