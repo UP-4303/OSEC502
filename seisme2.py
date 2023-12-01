@@ -34,16 +34,18 @@
 #sacToWav(donnees_seisme,r"C:\Users\gatia\visual\audio3.wav")
 
 
-
+#baselink = r"C:\Users\gatia\visual"
+baselink = r"C:\Users\m4tt3\OneDrive\Documents\OSEC"
 
 import obspy
 
 # Charger le fichier SAC
-st = obspy.read(r"C:\Users\gatia\visual\IU.ANMO.00.BHZ.M.2010.058.063000.SAC")
+# st = obspy.read(baselink + r"\IU.ANMO.00.BHZ.M.2010.058.063000.SAC")
+st = obspy.read(baselink + r"\sac\II.MSVF.1994.05.24.00.00.00.sac")
 
 print("ouvert")
 # Amplification du signal (par exemple, multiplication par un facteur)
-amplification_factor = 500 
+amplification_factor = 10000
 for trace in st:
     trace.data *= amplification_factor
     
@@ -56,7 +58,7 @@ print("amplifié")
 # st1= obspy.read(r"C:\Users\gatia\visual\audio1.sac")
 # print("reouvert")
 
-st.write(r"C:\Users\gatia\visual\audio2.wav", format='WAV', framerate=1000)
+st.write(baselink + r"\audio2.wav", format='WAV', framerate=1000)
 print("refermé")
 
 from pydub import AudioSegment
@@ -69,8 +71,8 @@ def wav_to_mp3(input_wav, output_mp3):
     audio.export(output_mp3, format="mp3", bitrate="320k")
 
 # Spécifier le chemin du fichier WAV en entrée et du fichier MP3 en sortie
-input_wav_file = r"C:\Users\gatia\visual\audio2.wav"
-output_mp3_file = r"C:\Users\gatia\visual\audio3.mp3"
+input_wav_file = baselink + r"\audio2.wav"
+output_mp3_file = baselink + r"\audio3.mp3"
 
 # Convertir le fichier WAV en MP3
 wav_to_mp3(input_wav_file, output_mp3_file)

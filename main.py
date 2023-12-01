@@ -130,4 +130,4 @@ def main(howManyEvents = 5, howManyStations = 10):
 	return resultArray
 
 if __name__ == "__main__":
-	main()
+	main(10)

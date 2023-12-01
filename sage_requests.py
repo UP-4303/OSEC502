@@ -24,9 +24,9 @@ def requestNearestStations(lat, lon, eventTime):
 	params = {
 		"lat":str(lat),
 		"lon":str(lon),
-		"maxradius":0.1,
-		"startbefore":str((eventTime - relativedelta(minute=5)).date()),
-		"endafter":str((eventTime + relativedelta(minute=5)).date()),
+		"maxradius":5,
+		"startbefore":datetime.strftime((eventTime - relativedelta(minute=5)), isoDatetimeFormat),
+		"endafter":datetime.strftime((eventTime + relativedelta(minute=5)), isoDatetimeFormat),
 		"format":"geocsv"
 	}
 	return requests.get(baselink, params)
@@ -34,23 +34,24 @@ def requestNearestStations(lat, lon, eventTime):
 def requestSac(networkId, stationId, eventTime, distance):
 	baselink = "http://service.iris.edu/fdsnws/dataselect/1/query"
 	timeshift = floor(distance/6) # Speed of seismic waves is between 2 and 6 km/s
+	print(datetime.strftime((eventTime - relativedelta(seconds=timeshift)), isoDatetimeFormat))
+	print(datetime.strftime((eventTime + relativedelta(seconds=300-timeshift)), isoDatetimeFormat))
 	params = {
 		"format":"sac.zip",
-		"start":str((eventTime - relativedelta(seconds=timeshift)).date()),
-		"end":str((eventTime + relativedelta(seconds=300-timeshift)).date()),
+		"start":datetime.strftime((eventTime - relativedelta(seconds=timeshift)), isoDatetimeFormat),
+		"end":datetime.strftime((eventTime + relativedelta(seconds=300-timeshift)), isoDatetimeFormat),
 		"net":networkId,
 		"sta":stationId
 	}
 	return requests.get(baselink, params)
 
 def requestMultipleSacs(stations, event):
-	eventTime = datetime.strptime(event['Time'], isoDatetimeFormat)
 	requests = []
 	for i in range(len(stations)):
 		requests.append(requestSac(
 			stations[i]["Network"],
 			stations[i]["Station"],
-			eventTime,
+			datetime.strptime(event['Time'], isoDatetimeFormat),
 			distance(float(stations[i]['Longitude']), float(stations[i]['Latitude']), float(event['Longitude']), float(event['Latitude']))
 		))
 	return requests
