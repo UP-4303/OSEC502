@@ -41,7 +41,7 @@ def printDict(lastEvents: [any]):
 
 ####################
 # main
-def main(howManyEvents = 5, howManyStations = 5):
+def main(howManyEvents = 5, howManyStations = 10):
 	print("STARTING...")
 
 	# Filename generators
@@ -130,4 +130,4 @@ def main(howManyEvents = 5, howManyStations = 5):
 	return resultArray
 
 if __name__ == "__main__":
-	main(5,10)
+	main()
