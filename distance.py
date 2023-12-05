@@ -41,6 +41,11 @@ if (__name__  == '__main__'):
 
     tp = (dist / V1)/60
     ts = (dist / V2)/60
+    
+    # pour obtenir le dt on soustrait ts à tp
 
+    dt = tp - ts
+    
     print(f'le temps de parcours des ondes p est {tp} en min')
     print(f'le temps de parcours des ondes s est {ts} en min')
+    print(f'donc dt vaut (dt) en min') 
