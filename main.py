@@ -8,8 +8,8 @@ import os
 
 ####################
 # Internal modules
-# WAV export with amplifier
-from sacToWav import sacToWav
+# WAV and MP3 export with amplifier
+from audio_converter import sacToWav, wavToMp3
 # Sage API requests creators
 from sage_requests import *
 # geoCSV parser
@@ -63,9 +63,18 @@ def main(howManyEvents = 5, howManyStations = 10):
 	
 	####################
 	# Prompt for event selection
-	eventSelected = int(input(f"Choose an event (between 0 and {howManyEvents-1}, -1 to quit) : "))
-	while(eventSelected < -1 or eventSelected >= howManyEvents):
-		eventSelected = int(input(f"Please select a valid event !\nChoose an event (between 0 and {howManyEvents-1}, -1 to quit) : "))
+	
+	while True:
+		try:
+			eventSelected = int(input(f"Choose an event (between 0 and {howManyEvents-1}, -1 to quit) : "))
+			if(eventSelected >= -1 and eventSelected < howManyEvents):
+				break
+			else:
+				print(f'[DEBUG]3 {eventSelected}, {type(eventSelected)}')
+				print(f"Please select a valid event !")
+		except:
+			print(f"Please select a valid event !")
+
 	if(eventSelected == -1):
 		exit()
 
@@ -85,9 +94,6 @@ def main(howManyEvents = 5, howManyStations = 10):
 	print("GETTING SAC FILES")
 	rs = requestMultipleSacs(stations, lastEvents[eventSelected])
 	resultArray = []
-
-	# Prompt for generation of wav files
-	generateWav = input("GENERATE WAV FILES ? [y/n] ") == 'y'
 
 	# Delete already existing sac files (as zip aren't deleted they can be manually unzipped if needed)
 	for fileToDelete in os.listdir('sac'):
@@ -120,9 +126,12 @@ def main(howManyEvents = 5, howManyStations = 10):
 			print("OPENING")
 			resultArray.append(obspy.read("sac/" + filename(filebasename)))
 
-			if (generateWav):
-				print("GENERATING WAV FILE")
-				sacToWav(resultArray[-1], 'wav/'+ wavfilename(filebasename))
+			print("GENERATING WAV FILE")
+			distanceValue = distance(float(stations[i]['Longitude']), float(stations[i]['Latitude']), float(lastEvents[eventSelected]['Longitude']), float(lastEvents[eventSelected]['Latitude']))
+			sacToWav(resultArray[-1], 'wav', filebasename, distanceValue)
+
+			print("GENERATING MP3 FILE")
+			wavToMp3('wav', 'mp3', filebasename)
 
 			# print(resultArray[-1][0].stats.sampling_rate)
 	

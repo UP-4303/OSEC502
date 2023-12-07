@@ -34,8 +34,6 @@ def requestNearestStations(lat, lon, eventTime):
 def requestSac(networkId, stationId, eventTime, distance):
 	baselink = "http://service.iris.edu/fdsnws/dataselect/1/query"
 	timeshift = floor(distance/6) # Speed of seismic waves is between 2 and 6 km/s
-	print(datetime.strftime((eventTime - relativedelta(seconds=timeshift)), isoDatetimeFormat))
-	print(datetime.strftime((eventTime + relativedelta(seconds=300-timeshift)), isoDatetimeFormat))
 	params = {
 		"format":"sac.zip",
 		"start":datetime.strftime((eventTime - relativedelta(seconds=timeshift)), isoDatetimeFormat),
