@@ -24,7 +24,7 @@ def mixMp3(inputPath, outputPath, filebasename, distance, samplingRate):
 	dt = getDt(distance)  # décalage en secondes
 	print(distance)
 	print(dt)
-	dts = int(dt * (samplingRate/1000))  # décalage en millisecondes
+	dts = int(dt * (samplingRate))  # décalage en millisecondes
 	# Appliquer le décalage
 	print(dts)
 	if (dts != 1):
@@ -35,8 +35,7 @@ def mixMp3(inputPath, outputPath, filebasename, distance, samplingRate):
 		b = audio
 
 	# Concaténer les segments pour former le signal décalé
-	shifted_audio = a + b
-	shifted_audio.set_channels(2)
+	shifted_audio = AudioSegment.from_mono_audiosegments(a,b)
 
 	# Enregistrer le signal décalé dans un nouveau fichier audio
 	shifted_audio.export(outputPath + '/' + filebasename + '.mp3', format='mp3', bitrate="320k")
