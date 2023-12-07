@@ -5,6 +5,7 @@ import zipfile as zf
 from datetime import datetime
 from tabulate import tabulate
 import os
+import subprocess
 
 ####################
 # Internal modules
@@ -136,7 +137,7 @@ def main(howManyEvents = 5, howManyStations = 10):
 			wavToMp3('wav', 'mp3', filebasename)
 			mixMp3('mp3', 'result', filebasename, distanceValue, samplingRate)
 
-			
+			subprocess.run(["ffmpeg", "-i", f"result/{filebasename}.mp3", "-y", "-filter_complex", "showwavespic=s=1920x1200:split_channels=1", "-frames:v", "1", f"result/{filebasename}.png"])	
 	
 	# All your results are in resultArray !
 	return resultArray
