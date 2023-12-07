@@ -20,10 +20,11 @@ def wavToMp3(inputPath, outputPath, filebasename):
 def mixMp3(inputPath, outputPath, filebasename, distance, samplingRate):
 	# Charger le fichier audio
 	audio = AudioSegment.from_file(inputPath + '/' + filebasename + '.mp3')
-
-	dt = 2 # getDt(distance)  # décalage en secondes
-	dts = int(dt * samplingRate)  # décalage en millisecondes
-
+	distance /= 1000
+	dt = getDt(distance)  # décalage en secondes
+	print(distance)
+	print(dt)
+	dts = int(dt * (samplingRate/1000))  # décalage en millisecondes
 	# Appliquer le décalage
 	print(dts)
 	if (dts != 1):

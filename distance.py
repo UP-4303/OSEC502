@@ -34,13 +34,13 @@ def getDt(dist):
 
     # tp = temps d'arrivée des ondes P et ts = temps d'arrivée des ondes S
 
-    tp = (dist / V1)/60
-    ts = (dist / V2)/60
+    tp = (dist / V1)
+    ts = (dist / V2)
     
     # pour obtenir le dt on soustrait ts à tp
 
-    dt = ts - tp
-    return dt
+    # dt = ts - tp
+    return tp
 
 if (__name__  == '__main__'):
 
