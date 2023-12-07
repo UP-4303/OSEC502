@@ -39,7 +39,7 @@ def getDt(dist):
     
     # pour obtenir le dt on soustrait ts à tp
 
-    dt = tp - ts
+    dt = ts - tp
     return dt
 
 if (__name__  == '__main__'):

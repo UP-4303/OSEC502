@@ -5,10 +5,8 @@ from distance import getDt
 def sacToWav(st, path, filebasename, distance): # Distance is used for amplification
 	# Amplification du signal (par exemple, multiplication par un facteur)
 	amplificationBaseFactor = 10
-	print(st[0].data)
 	for trace in st:
 			trace.data *= amplificationBaseFactor * (distance/1000)
-	print(st[0].data)
 
 	st.write(path + '/' + filebasename + '.wav', format='WAV', framerate=1000)
 
@@ -19,19 +17,25 @@ def wavToMp3(inputPath, outputPath, filebasename):
 	# Convertir en MP3 avec une qualité spécifiée (ici, 320 kbps)
 	audio.export(outputPath + '/' + filebasename + '.mp3', format="mp3", bitrate="320k")
 
-def mixMp3(inputPath, outputPath, filebasename, distance):
+def mixMp3(inputPath, outputPath, filebasename, distance, samplingRate):
 	# Charger le fichier audio
 	audio = AudioSegment.from_file(inputPath + '/' + filebasename + '.mp3')
 
-	dt = getDt(distance)  # décalage en secondes
-	dts = int(dt * 1000)  # décalage en millisecondes
+	dt = 2 # getDt(distance)  # décalage en secondes
+	dts = int(dt * samplingRate)  # décalage en millisecondes
 
 	# Appliquer le décalage
-	a = audio[:-(dts - 1)] if dts != 1 else audio
-	b = audio[dts - 1:]
+	print(dts)
+	if (dts != 1):
+		a = audio[:-(dts - 1)]
+		b = audio[(dts - 1):]
+	else:
+		a = audio
+		b = audio
 
 	# Concaténer les segments pour former le signal décalé
 	shifted_audio = a + b
+	shifted_audio.set_channels(2)
 
 	# Enregistrer le signal décalé dans un nouveau fichier audio
-	shifted_audio.export(outputPath + '/' + filebasename + '.mp3', format='mp3')
+	shifted_audio.export(outputPath + '/' + filebasename + '.mp3', format='mp3', bitrate="320k")

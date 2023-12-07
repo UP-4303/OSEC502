@@ -9,7 +9,7 @@ import os
 ####################
 # Internal modules
 # WAV and MP3 export with amplifier
-from audio_converter import sacToWav, wavToMp3
+from audio_converter import sacToWav, wavToMp3, mixMp3
 # Sage API requests creators
 from sage_requests import *
 # geoCSV parser
@@ -131,10 +131,12 @@ def main(howManyEvents = 5, howManyStations = 10):
 			sacToWav(resultArray[-1], 'wav', filebasename, distanceValue)
 
 			print("GENERATING MP3 FILES")
+			samplingRate = resultArray[-1][0].stats.sampling_rate
+			
 			wavToMp3('wav', 'mp3', filebasename)
-			mixMp3('mp3', 'result', filebasename, distanceValue)
+			mixMp3('mp3', 'result', filebasename, distanceValue, samplingRate)
 
-			# print(resultArray[-1][0].stats.sampling_rate)
+			
 	
 	# All your results are in resultArray !
 	return resultArray
