@@ -27,13 +27,8 @@ def distance(lon1,lat1,lon2,lat2):
     
     return distance
 
-if (__name__  == '__main__'):
-
-    dist = distance(lon1, lat1, lon2, lat2)/1000
-    print(f'la distance entre le foyer et la station la plus proche est {dist} ')
-
+def getDt(dist):
     # pour le temps mis par l'onde pour aller du foyer à la station
-
     V1 = 6   # avec V1 en Km/s qui correspondent aux ondes P
     V2 = 3.5   # avec V2 en Km/s qui correspondent aux ondes S
 
@@ -45,7 +40,15 @@ if (__name__  == '__main__'):
     # pour obtenir le dt on soustrait ts à tp
 
     dt = tp - ts
+    return dt
+
+if (__name__  == '__main__'):
+
+    dist = distance(lon1, lat1, lon2, lat2)/1000
+    print(f'la distance entre le foyer et la station la plus proche est {dist} ')
     
+    dt = getDt(dist)
+
     print(f'le temps de parcours des ondes p est {tp} en min')
     print(f'le temps de parcours des ondes s est {ts} en min')
     print(f'donc dt vaut (dt) en min') 

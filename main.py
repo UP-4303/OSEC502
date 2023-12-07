@@ -130,8 +130,9 @@ def main(howManyEvents = 5, howManyStations = 10):
 			distanceValue = distance(float(stations[i]['Longitude']), float(stations[i]['Latitude']), float(lastEvents[eventSelected]['Longitude']), float(lastEvents[eventSelected]['Latitude']))
 			sacToWav(resultArray[-1], 'wav', filebasename, distanceValue)
 
-			print("GENERATING MP3 FILE")
+			print("GENERATING MP3 FILES")
 			wavToMp3('wav', 'mp3', filebasename)
+			mixMp3('mp3', 'result', filebasename, distanceValue)
 
 			# print(resultArray[-1][0].stats.sampling_rate)
 	
