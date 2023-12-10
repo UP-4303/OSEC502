@@ -50,7 +50,7 @@ def main(howManyEvents = 5, howManyStations = 10):
 	zipname = lambda filebasename: filebasename + ".sac.zip"
 	wavfilename = lambda filebasename: filebasename + ".wav"
 	
-	generatefilebasename = lambda s: f"{s['Network']}.{s['Station']}.{datetime.strftime(datetime.strptime(s['StartTime'], stationDatetimeFormat), fileDatetimeFormat)}"
+	generatefilebasename = lambda s,e: f"{s['Network']}.{s['Station']}.{datetime.strftime(datetime.strptime(e['Time'], isoDatetimeFormat), fileDatetimeFormat)}"
 
 	####################
 	# Get last events
@@ -117,7 +117,7 @@ def main(howManyEvents = 5, howManyStations = 10):
 		else:
 			triggerNothingToProcess = False
 			print("SAVING ZIP FILE")
-			filebasename = generatefilebasename(stations[i])
+			filebasename = generatefilebasename(stations[i], lastEvents[eventSelected])
 			saveFile(rs[i].content, "saczip/" + zipname(filebasename))
 
 			print("UNZIPPING")
@@ -137,8 +137,11 @@ def main(howManyEvents = 5, howManyStations = 10):
 			wavToMp3('wav', 'mp3', filebasename)
 			mixMp3('mp3', 'result', filebasename, distanceValue, samplingRate)
 
-			subprocess.run(["ffmpeg", "-i", f"result/{filebasename}.mp3", "-y", "-filter_complex", "showwavespic=s=1920x1200:split_channels=1", "-frames:v", "1", f"result/{filebasename}.png"])	
+			subprocess.run(["ffmpeg", "-v", "0", "-i", f"result/{filebasename}.mp3", "-y", "-filter_complex", "showwavespic=s=1920x1200:split_channels=1", "-frames:v", "1", f"result/{filebasename}.png"])	
 	
+	if(triggerNothingToProcess):
+		print("NO SAC RETRIVED...")
+
 	# All your results are in resultArray !
 	return resultArray
 
