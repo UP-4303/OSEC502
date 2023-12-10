@@ -4,6 +4,9 @@ test-*
 *.SAC
 *.sac
 *.wav
+*.mp3
 sac
 saczip
 wav
+mp3
+result
